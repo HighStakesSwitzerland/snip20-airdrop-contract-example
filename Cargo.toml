@@ -1,0 +1,54 @@
+[package]
+name = "high-stakes-smart-contract"
+version = "1.0.0"
+authors = ["Joe <joe@highstakes.ch>"]
+edition = "2021"
+exclude = [
+  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
+  "contract.wasm",
+  "hash.txt",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'
+incremental = false
+overflow-checks = true
+
+[features]
+backtraces = []
+
+[dependencies]
+cosmwasm-std = { git = "https://github.com/scrtlabs/cosmwasm", branch = "secret" }
+cosmwasm-storage = { git = "https://github.com/scrtlabs/cosmwasm", branch = "secret" }
+secret-toolkit = { git = "https://github.com/scrtlabs/secret-toolkit", branch = "cosmwasm-v1.0", default-features = false, features = [
+  "utils",
+  "storage",
+  "serialization",
+  "viewing-key",
+  "crypto",
+] }
+cw-utils = "0.14.0"
+schemars = "0.8.1"
+serde = { version = "1.0.114", default-features = false, features = ["derive"] }
+snafu = { version = "0.7.1" }
+subtle = { version = "2.2.3", default-features = false }
+base64 = "0.13.0"
+rand_chacha = { version = "0.3.1", default-features = false }
+rand_core = { version = "0.6.3", default-features = false }
+sha2 = { version = "0.9.9", default-features = false }
+hex = "0.4.3"
+ripemd = "0.1.1"
+bech32 = "0.9.1"
+
+[dev-dependencies]
+cosmwasm-schema = { version = "1.1.0" }
